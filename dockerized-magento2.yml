@@ -1,0 +1,21 @@
+version: '2'
+services:
+  dockerized_magento2_nginx:
+    container_name: DOCKERIZED_MAGENTO2_NGINX
+    image: qwertyre/magento2-nginx:latest
+    volumes:
+      - dockerized_magento2:/srv/magento2
+    network_mode: "DOCKER_network"
+    labels:
+      - "traefik.backend=DOCKERIZED_MAGENTO2_NGINX"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:magento.dockerized.dev"
+      - "traefik.docker.network=DOCKER_network"
+    depends_on:
+      - dockerized_magento2_php
+  dockerized_magento2_php:
+    container_name: DOCKERIZED_MAGENTO2_PHP
+    image: qwertyre/magento2-php:latest
+    volumes:
+      - dockerized_magento2:/srv/magento2
+    network_mode: "DOCKER_network"
